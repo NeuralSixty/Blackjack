@@ -146,7 +146,10 @@ export const useTableStore = defineStore("table", () => {
         return true;
       }
 
-      if (dealerHand.score === playerHand.score) {
+      if (
+        dealerHand.score === playerHand.score &&
+        !(dealerHand.hasBlackjack || playerHand.hasBlackjack)
+      ) {
         return true;
       }
 
