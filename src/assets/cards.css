@@ -1,0 +1,211 @@
+.facedown {
+  background: url(cards/CardBackSide.svg);
+}
+
+.two-spades {
+  background: url(cards/2S.svg);
+}
+
+.three-spades {
+  background: url(cards/3S.svg);
+}
+
+.four-spades {
+  background: url(cards/4S.svg);
+}
+
+.five-spades {
+  background: url(cards/5S.svg);
+}
+
+.six-spades {
+  background: url(cards/6S.svg);
+}
+
+.seven-spades {
+  background: url(cards/7S.svg);
+}
+
+.eight-spades {
+  background: url(cards/8S.svg);
+}
+
+.nine-spades {
+  background: url(cards/9S.svg);
+}
+
+.ten-spades {
+  background: url(cards/10S.svg);
+}
+
+.jack-spades {
+  background: url(cards/JS.svg);
+}
+
+.queen-spades {
+  background: url(cards/QS.svg);
+}
+
+.king-spades {
+  background: url(cards/KS.svg);
+}
+
+.ace-spades {
+  background: url(cards/AS.svg);
+}
+
+.two-hearts {
+  background: url(cards/2H.svg);
+}
+
+.three-hearts {
+  background: url(cards/3H.svg);
+}
+
+.four-hearts {
+  background: url(cards/4H.svg);
+}
+
+.five-hearts {
+  background: url(cards/5H.svg);
+}
+
+.six-hearts {
+  background: url(cards/6H.svg);
+}
+
+.seven-hearts {
+  background: url(cards/7H.svg);
+}
+
+.eight-hearts {
+  background: url(cards/8H.svg);
+}
+
+.nine-hearts {
+  background: url(cards/9H.svg);
+}
+
+.ten-hearts {
+  background: url(cards/10H.svg); 
+}
+
+.jack-hearts {
+  background: url(cards/JH.svg);
+}
+
+.queen-hearts {
+  background: url(cards/QH.svg);
+}
+
+.king-hearts {
+  background: url(cards/KH.svg);
+}
+
+.ace-hearts {
+  background: url(cards/AH.svg);
+}
+
+.two-diamonds {
+  background: url(cards/2D.svg);
+}
+
+.three-diamonds {
+  background: url(cards/3D.svg);
+}
+
+.four-diamonds {
+  background: url(cards/4D.svg);
+}
+
+.five-diamonds {
+  background: url(cards/5D.svg);
+}
+
+.six-diamonds {
+  background: url(cards/6D.svg);
+}
+
+.seven-diamonds {
+  background: url(cards/7D.svg);
+}
+
+.eight-diamonds {
+  background: url(cards/8D.svg);
+}
+
+.nine-diamonds {
+  background: url(cards/9D.svg);
+}
+
+.ten-diamonds {
+  background: url(cards/10D.svg);
+}
+
+.jack-diamonds {
+  background: url(cards/JD.svg);
+}
+
+.queen-diamonds {
+  background: url(cards/QD.svg);
+}
+
+.king-diamonds {
+  background: url(cards/KD.svg);
+}
+
+.ace-diamonds {
+  background: url(cards/AD.svg);
+}
+
+.two-clubs {
+  background: url(cards/2C.svg);
+}
+
+.three-clubs {
+  background: url(cards/3C.svg);
+}
+
+.four-clubs {
+  background: url(cards/4C.svg);
+}
+
+.five-clubs {
+  background: url(cards/5C.svg);
+}
+
+.six-clubs {
+  background: url(cards/6C.svg);
+}
+
+.seven-clubs {
+  background: url(cards/7C.svg);
+}
+
+.eight-clubs {
+  background: url(cards/8C.svg);
+}
+
+.nine-clubs {
+  background: url(cards/9C.svg);
+}
+
+.ten-clubs {
+  background: url(cards/10C.svg);
+}
+
+.jack-clubs {
+  background: url(cards/JC.svg);
+}
+
+.queen-clubs {
+  background: url(cards/QC.svg);
+}
+
+.king-clubs {
+  background: url(cards/KC.svg);
+}
+
+.ace-clubs {
+  background: url(cards/AC.svg);
+}

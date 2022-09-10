@@ -1,0 +1,326 @@
+import { ref, computed } from "vue";
+import { defineStore } from "pinia";
+
+export const useDeckStore = defineStore("deck", () => {
+  const deck = ref([
+    {
+      name: "Two of Spades",
+      class: "two-spades",
+      value: 2,
+      color: "black",
+    },
+    {
+      name: "Three of Spades",
+      class: "three-spades",
+      value: 3,
+      color: "black",
+    },
+    {
+      name: "Four of Spades",
+      class: "four-spades",
+      value: 4,
+      color: "black",
+    },
+    {
+      name: "Five of Spades",
+      class: "five-spades",
+      value: 5,
+      color: "black",
+    },
+    {
+      name: "Six of Spades",
+      class: "six-spades",
+      value: 6,
+      color: "black",
+    },
+    {
+      name: "Seven of Spades",
+      class: "seven-spades",
+      value: 7,
+      color: "black",
+    },
+    {
+      name: "Eight of Spades",
+      class: "eight-spades",
+      value: 8,
+      color: "black",
+    },
+    {
+      name: "Nine of Spades",
+      class: "nine-spades",
+      value: 9,
+      color: "black",
+    },
+    {
+      name: "Ten of Spades",
+      class: "ten-spades",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "Jack of Spades",
+      class: "jack-spades",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "Queen of Spades",
+      class: "queen-spades",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "King of Spades",
+      class: "king-spades",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "Ace of Spades",
+      class: "ace-spades",
+      value: 11,
+      color: "black",
+    },
+    {
+      name: "Two of Hearts",
+      class: "two-hearts",
+      value: 2,
+      color: "red",
+    },
+    {
+      name: "Three of Hearts",
+      class: "three-hearts",
+      value: 3,
+      color: "red",
+    },
+    {
+      name: "Four of Hearts",
+      class: "four-hearts",
+      value: 4,
+      color: "red",
+    },
+    {
+      name: "Five of Hearts",
+      class: "five-hearts",
+      value: 5,
+      color: "red",
+    },
+    {
+      name: "Six of Hearts",
+      class: "six-hearts",
+      value: 6,
+      color: "red",
+    },
+    {
+      name: "Seven of Hearts",
+      class: "seven-hearts",
+      value: 7,
+      color: "red",
+    },
+    {
+      name: "Eight of Hearts",
+      class: "eight-hearts",
+      value: 8,
+      color: "red",
+    },
+    {
+      name: "Nine of Hearts",
+      class: "nine-hearts",
+      value: 9,
+      color: "red",
+    },
+    {
+      name: "Ten of Hearts",
+      class: "ten-hearts",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "Jack of Hearts",
+      class: "jack-hearts",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "Queen of Hearts",
+      class: "queen-hearts",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "King of Hearts",
+      class: "king-hearts",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "Ace of Hearts",
+      class: "ace-hearts",
+      value: 11,
+      color: "red",
+    },
+    {
+      name: "Two of Diamonds",
+      class: "two-diamonds",
+      value: 2,
+      color: "red",
+    },
+    {
+      name: "Three of Diamonds",
+      class: "three-diamonds",
+      value: 3,
+      color: "red",
+    },
+    {
+      name: "Four of Diamonds",
+      class: "four-diamonds",
+      value: 4,
+      color: "red",
+    },
+    {
+      name: "Five of Diamonds",
+      class: "five-diamonds",
+      value: 5,
+      color: "red",
+    },
+    {
+      name: "Six of Diamonds",
+      class: "six-diamonds",
+      value: 6,
+      color: "red",
+    },
+    {
+      name: "Seven of Diamonds",
+      class: "seven-diamonds",
+      value: 7,
+      color: "red",
+    },
+    {
+      name: "Eight of Diamonds",
+      class: "eight-diamonds",
+      value: 8,
+      color: "red",
+    },
+    {
+      name: "Nine of Diamonds",
+      class: "nine-diamonds",
+      value: 9,
+      color: "red",
+    },
+    {
+      name: "Ten of Diamonds",
+      class: "ten-diamonds",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "Jack of Diamonds",
+      class: "jack-diamonds",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "Queen of Diamonds",
+      class: "queen-diamonds",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "King of Diamonds",
+      class: "king-diamonds",
+      value: 10,
+      color: "red",
+    },
+    {
+      name: "Ace of Diamonds",
+      class: "ace-diamonds",
+      value: 11,
+      color: "red",
+    },
+    {
+      name: "Two of Clubs",
+      class: "two-clubs",
+      value: 2,
+      color: "black",
+    },
+    {
+      name: "Three of Clubs",
+      class: "three-clubs",
+      value: 3,
+      color: "black",
+    },
+    {
+      name: "Four of Clubs",
+      class: "four-clubs",
+      value: 4,
+      color: "black",
+    },
+    {
+      name: "Five of Clubs",
+      class: "five-clubs",
+      value: 5,
+      color: "black",
+    },
+    {
+      name: "Six of Clubs",
+      class: "six-clubs",
+      value: 6,
+      color: "black",
+    },
+    {
+      name: "Seven of Clubs",
+      class: "seven-clubs",
+      value: 7,
+      color: "black",
+    },
+    {
+      name: "Eight of Clubs",
+      class: "eight-clubs",
+      value: 8,
+      color: "black",
+    },
+    {
+      name: "Nine of Clubs",
+      class: "nine-clubs",
+      value: 9,
+      color: "black",
+    },
+    {
+      name: "Ten of Clubs",
+      class: "ten-clubs",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "Jack of Clubs",
+      class: "jack-clubs",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "Queen of Clubs",
+      class: "queen-clubs",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "King of Clubs",
+      class: "king-clubs",
+      value: 10,
+      color: "black",
+    },
+    {
+      name: "Ace of Clubs",
+      class: "ace-clubs",
+      value: 11,
+      color: "black",
+    },
+  ]);
+
+  const getDeck = computed(() => deck.value);
+
+  return {
+    deck,
+    getDeck,
+  };
+});
