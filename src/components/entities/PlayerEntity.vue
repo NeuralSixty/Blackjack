@@ -190,11 +190,12 @@ const surrenderHand = (hand) => {
         <div
           v-if="
             tableStore.playerHands[i].hasBlackjack &&
-            !tableStore.dealerHand.hasBlackjack
+            !tableStore.dealerHand.hasBlackjack &&
+            tableStore.phase >= 7
           "
         >
           <span
-            >Blackjack paid you
+            >Blackjack pays you
             {{
               tableStore.formatNumberToUSD(
                 tableStore.playerHands[i].betAmount *
