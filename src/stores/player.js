@@ -9,7 +9,8 @@ export const usePlayerStore = defineStore("player", () => {
     return bankRoll.value.toLocaleString("en-US", {
       style: "currency",
       currency: "USD",
-      minimumFractionDigits: 2,
+      minimumFractionDigits:
+        (Math.round(bankRoll.value * 100) / 100) % 1 === 0 ? 0 : 2,
     });
   });
 

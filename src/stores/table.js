@@ -215,7 +215,8 @@ export const useTableStore = defineStore("table", () => {
       return money.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
-        minimumFractionDigits: 2,
+        minimumFractionDigits:
+          (Math.round(money * 100) / 100) % 1 === 0 ? 0 : 2,
       });
     };
   });
