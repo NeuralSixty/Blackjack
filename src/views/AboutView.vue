@@ -47,9 +47,9 @@
     <p>This means the casino will only win 50.5% of the time on average.</p>
     <p>For every $100 you bet, you are expected to lose only 50 cents.</p>
     <p>
-      Alongside Card Counting, you will surpass the house edge long-term and rip
-      casinos to shreds.
+      Alongside Card Counting, the house edge is further reduced by about 0.5% for every +1 True Count.
     </p>
+    <p>You will surpass the house edge long-term and rip casinos to shreds.</p>
     <p><b>But don't let them find out about what you're doing!</b></p>
     <p>Play Blackjack and see if you can bleed the casino dry.</p>
     <p>In real life they'll catch you, but you can at least do it here.</p>
