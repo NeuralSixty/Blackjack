@@ -230,13 +230,14 @@ const surrenderHand = (hand) => {
   </div>
   <div class="player-actions">
     <div v-if="tableStore.phase === 1" class="starting-actions">
-      <h4>Customize rules</h4>
+      <h3>Customize rules</h3>
       <div class="input-groups">
-        <div class="checkboxes">
+        <div class="standard-checkboxes">
+          <div><b>Standard rules</b></div>
           <div>
-            <span>Player can late surrender:</span>
+            <span>Dealer peeks for Blackjack: </span>
             <input
-              v-model="tableStore.rules.playerCanLateSurrender"
+              v-model="tableStore.rules.dealerPeeksForBlackjack"
               type="checkbox"
             />
           </div>
@@ -248,16 +249,9 @@ const surrenderHand = (hand) => {
             />
           </div>
           <div>
-            <span>Allow Double After Split:</span>
+            <span>Player can late surrender:</span>
             <input
-              v-model="tableStore.rules.doubleAfterSplit"
-              type="checkbox"
-            />
-          </div>
-          <div>
-            <span>Player may split multiple times: </span>
-            <input
-              v-model="tableStore.rules.multipleSplitting.enabled"
+              v-model="tableStore.rules.playerCanLateSurrender"
               type="checkbox"
             />
           </div>
@@ -269,21 +263,35 @@ const surrenderHand = (hand) => {
             />
           </div>
           <div>
-            <span>Dealer peeks for Blackjack: </span>
-            <input
-              v-model="tableStore.rules.dealerPeeksForBlackjack"
-              type="checkbox"
-            />
-          </div>
-          <div>
-            <span>Dealer burns 1 card after shuffling: </span>
+            <span>Dealer burns a card after shuffling: </span>
             <input
               v-model="tableStore.rules.burnCardAfterShuffle"
               type="checkbox"
             />
           </div>
         </div>
+        <div class="double-down-checkboxes">
+          <div><b>Double Down rules</b></div>
+          <div>
+            <span>Allow Double After Split:</span>
+            <input
+              v-model="tableStore.rules.doubleAfterSplit"
+              type="checkbox"
+            />
+          </div>
+        </div>
+        <div class="split-checkboxes">
+          <div><b>Split rules</b></div>
+          <div>
+            <span>Player may split multiple times: </span>
+            <input
+              v-model="tableStore.rules.multipleSplitting.enabled"
+              type="checkbox"
+            />
+          </div>
+        </div>
         <div class="non-checkboxes">
+          <div><b>Table & Dealer rules</b></div>
           <div>
             <span>Decks to use:</span>
             <input
@@ -325,9 +333,9 @@ const surrenderHand = (hand) => {
               max="7"
             />
           </div>
-          <p><button @click="startGame">Start the game</button></p>
         </div>
       </div>
+      <p><button @click="startGame">Start the game</button></p>
     </div>
     <div v-if="tableStore.phase === 3" class="betting-actions-container">
       <template v-for="(n, i) in tableStore.numberOfHands" :key="i">
@@ -687,5 +695,6 @@ const surrenderHand = (hand) => {
 }
 .input-groups {
   display: flex;
+  gap: 25px;
 }
 </style>

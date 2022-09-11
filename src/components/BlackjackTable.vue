@@ -36,11 +36,6 @@ const restartGame = () => {
           {{ tableStore.formatNumberToUSD(tableStore.getTotalPlayerBetAmount) }}
         </div>
         <div>
-          ✪ Playing {{ tableStore.numberOfHands }} hand{{
-            tableStore.numberOfHands === 1 ? "" : "s"
-          }}
-        </div>
-        <div>
           ✪ Shoe: {{ tableStore.shoe.length }}
           <span>{{ tableStore.shoe.length === 1 ? "card" : "cards" }}</span>
         </div>
@@ -68,21 +63,41 @@ const restartGame = () => {
           ✪ Decks to use:
           {{ tableStore.rules.decksToUse }}
         </div>
-        <div>✪ Blackjack pays {{ tableStore.rules.blackjackPayoutRate }}</div>
-        <div v-if="tableStore.rules.playerCanLateSurrender">
-          ✪ Player can late surrender (first two cards only - no split hands)
+        <div>✪ {{ tableStore.formatDealerDrawingRule }}</div>
+        <div>
+          ✪ Playing {{ tableStore.numberOfHands }} hand{{
+            tableStore.numberOfHands === 1 ? "" : "s"
+          }}
         </div>
-        <div v-else>✪ Player cannot late surrender</div>
+        <div>✪ Blackjack pays {{ tableStore.rules.blackjackPayoutRate }}</div>
+        <h3>Standard rules</h3>
+        <div v-if="tableStore.rules.dealerPeeksForBlackjack">
+          ✪ Dealer peeks for blackjack (American rule)
+        </div>
+        <div v-else>✪ Dealer doesn't peek for blackjack (European rule)</div>
         <div v-if="tableStore.rules.insurance.enabled">
           ✪ Insurance is offered - pays
           {{ tableStore.rules.insurance.payoutRate }}
         </div>
         <div v-else>✪ Insurance is not offered</div>
+        <div v-if="tableStore.rules.playerCanLateSurrender">
+          ✪ Player can late surrender (first two cards only - no split hands)
+        </div>
+        <div v-else>✪ Player cannot late surrender</div>
+        <div v-if="tableStore.rules.sevenCardCharlie">
+          ✪ 7-card Charlie is allowed
+        </div>
+        <div v-else>✪ 7-card Charlie is not allowed</div>
+        <div v-if="tableStore.rules.burnCardAfterShuffle">
+          ✪ Dealer burns a card after shuffling
+        </div>
+        <div v-else>✪ Dealer does not burn a card after shuffling</div>
+        <h3>Double Down rules</h3>
         <div v-if="tableStore.rules.doubleAfterSplit">
           ✪ Double After Split is allowed
         </div>
         <div v-else>✪ Double After Split is not allowed</div>
-        <div>✪ {{ tableStore.formatDealerDrawingRule }}</div>
+        <h3>Split rules</h3>
         <div v-if="tableStore.rules.multipleSplitting.enabled">
           ✪ Player may split up to
           {{ tableStore.rules.multipleSplitting.iterations }} times
@@ -91,19 +106,6 @@ const restartGame = () => {
         <h3>Rules for Split Aces</h3>
         <div>✪ Player may only split aces once</div>
         <div>✪ Only 1 card for each ace is given</div>
-        <h3>Misc rules</h3>
-        <div v-if="tableStore.rules.dealerPeeksForBlackjack">
-          ✪ Dealer peeks for blackjack (American rule)
-        </div>
-        <div v-else>✪ Dealer doesn't peek for blackjack (European rule)</div>
-        <div v-if="tableStore.rules.sevenCardCharlie">
-          ✪ 7-card Charlie is allowed
-        </div>
-        <div v-else>✪ 7-card Charlie is not allowed</div>
-        <div v-if="tableStore.rules.burnCardAfterShuffle">
-          ✪ Dealer burns 1 card after shuffling
-        </div>
-        <div v-else>✪ Dealer does not burn 1 card after shuffling</div>
       </div>
     </div>
     <div class="cards-section">
