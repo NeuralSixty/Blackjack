@@ -189,6 +189,20 @@ export const useTableStore = defineStore("table", () => {
     }
   });
 
+  const getTotalPlayerInsuranceBetAmount = computed(() => {
+    if (playerHands.value.length > 0) {
+      return playerHands.value
+        .map((hand) => {
+          return hand.insuranceBetAmount;
+        })
+        .reduce((previousBet, bet) => {
+          return previousBet + bet;
+        });
+    } else {
+      return 0;
+    }
+  });
+
   const getHighestPossibleTotalPlayerInsuranceBetAmount = computed(() => {
     if (playerHands.value.length > 0) {
       return playerHands.value
@@ -730,6 +744,7 @@ export const useTableStore = defineStore("table", () => {
     playerAndDealerPushed,
     getTotalPlayerBetAmount,
     getTotalUnplacedPlayerBetAmount,
+    getTotalPlayerInsuranceBetAmount,
     getHighestPossibleTotalPlayerInsuranceBetAmount,
     formatNumberToUSD,
     getPlayerHandBet,

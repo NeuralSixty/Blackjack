@@ -599,10 +599,10 @@ const surrenderHand = (hand) => {
         "
         @click="finishAllInsuranceBets(true)"
       >
-        Insure all hands
+        {{ tableStore.getTotalPlayerInsuranceBetAmount ? 'Insure the remaining hands' : 'Insure all hands' }}
       </button>
       <button @click="finishAllInsuranceBets(false)">
-        Do not insure any hand
+        {{ tableStore.getTotalPlayerInsuranceBetAmount ? 'Do not insure the remaining hands' : 'Do not insure any hand' }}
       </button>
     </p>
   </div>
