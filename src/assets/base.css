@@ -1,8 +1,13 @@
 body {
   background-color: #4B6D39;
   color: white;
+  font-family: "Calibri"
 }
 
 a {
   color: white;
+}
+
+button, select, input {
+  font-family: "Calibri";
 }
