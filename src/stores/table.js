@@ -37,7 +37,7 @@ export const useTableStore = defineStore("table", () => {
     allowInsuranceDoubleDown: false,
     allowInsuranceSplit: false,
     europeanDoubleDownOnly: false,
-    europeanSplitOnly: false
+    europeanSplitOnly: false,
   });
 
   const dealerShouldStand = computed(() => {
@@ -67,7 +67,8 @@ export const useTableStore = defineStore("table", () => {
       if (
         playerHand.cards.length !== 2 ||
         (!rules.doubleAfterSplit && playerHand.splitCount > 0) ||
-        (rules.europeanDoubleDownOnly && !(playerHand.score > 8 && playerHand.score < 12))
+        (rules.europeanDoubleDownOnly &&
+          !(playerHand.score > 8 && playerHand.score < 12))
       ) {
         return false;
       }
@@ -88,7 +89,13 @@ export const useTableStore = defineStore("table", () => {
             ? rules.multipleSplitting.iterations
             : 1) &&
         playerHand.cards[0].card.value === playerHand.cards[1].card.value &&
-        !(rules.europeanSplitOnly && !(playerHand.cards[0].card.value === 10 && playerHand.cards[1].card.value === 10))
+        !(
+          rules.europeanSplitOnly &&
+          !(
+            playerHand.cards[0].card.value === 10 &&
+            playerHand.cards[1].card.value === 10
+          )
+        )
       ) {
         return true;
       }

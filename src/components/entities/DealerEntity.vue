@@ -53,9 +53,9 @@ const getDealerScore = () => {
 
   if (rules.value.dealerGetsHoleCard) {
     firstDealerCardIsFacedDown = dealerHand.value.cards[0].faceDown;
-    secondDealerCardValue = dealerHand.value.cards[1].card.value
+    secondDealerCardValue = dealerHand.value.cards[1].card.value;
   } else if (dealerHand.value.cards.length > 1) {
-    secondDealerCardValue = dealerHand.value.cards[1].card.value
+    secondDealerCardValue = dealerHand.value.cards[1].card.value;
   }
 
   let dealerScore = dealerHand.value.score;

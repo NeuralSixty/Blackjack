@@ -8,10 +8,7 @@ import BlackjackPhase from "@/components/core/BlackjackPhase.vue";
 const tableStore = useTableStore();
 const playerStore = usePlayerStore();
 
-const {
-  rules,
-  playerHands
-} = storeToRefs(tableStore);
+const { rules, playerHands } = storeToRefs(tableStore);
 
 const startGame = () => {
   tableStore.initPlayerHands();
@@ -67,14 +64,14 @@ const doubleInsuranceBet = (hand) => {
 
   playerStore.subtractFromBankRoll(insuranceAmount);
   tableStore.updateInsuranceBetAmount(hand, insuranceAmount * 2);
-}
+};
 
 const splitInsuranceBet = (hand) => {
   const insuranceAmount = playerHands.value[hand].insuranceBetAmount;
 
   playerStore.subtractFromBankRoll(insuranceAmount);
   tableStore.updateInsuranceBetAmount(hand + 1, insuranceAmount);
-}
+};
 
 const finishInsuranceBet = (hand, insure) => {
   if (insure) {
@@ -128,7 +125,10 @@ const getPlayerScore = (hand) => {
 };
 
 const doubleHand = (hand) => {
-  if (playerHands.value[hand].insuranceBetAmount && rules.value.allowInsuranceDoubleDown) {
+  if (
+    playerHands.value[hand].insuranceBetAmount &&
+    rules.value.allowInsuranceDoubleDown
+  ) {
     doubleInsuranceBet(hand);
   }
 
@@ -143,7 +143,10 @@ const doubleHand = (hand) => {
 const splitHand = (hand) => {
   tableStore.splitPlayerHand(hand);
 
-  if (playerHands.value[hand].insuranceBetAmount && rules.value.allowInsuranceSplit) {
+  if (
+    playerHands.value[hand].insuranceBetAmount &&
+    rules.value.allowInsuranceSplit
+  ) {
     splitInsuranceBet(hand);
   }
 
@@ -179,8 +182,7 @@ const surrenderHand = (hand) => {
           {{ tableStore.formatNumberToUSD(tableStore.getPlayerHandBet(i)) }}
         </div>
         <div v-if="tableStore.getPlayerHandInsuranceBet(i)">
-          <span
-            v-if="tableStore.phase >= 5"
+          <span v-if="tableStore.phase >= 5"
             >Insurance:
             {{
               tableStore.formatNumberToUSD(
@@ -218,7 +220,8 @@ const surrenderHand = (hand) => {
           v-if="
             tableStore.playerHands[i].hasBlackjack &&
             !tableStore.dealerHand.hasBlackjack &&
-            ((tableStore.phase >= 7 && tableStore.rules.dealerGetsHoleCard) || (tableStore.phase >= 9 && !tableStore.rules.dealerGetsHoleCard))
+            ((tableStore.phase >= 7 && tableStore.rules.dealerGetsHoleCard) ||
+              (tableStore.phase >= 9 && !tableStore.rules.dealerGetsHoleCard))
           "
         >
           <span
@@ -299,7 +302,9 @@ const surrenderHand = (hand) => {
         </div>
         <div class="double-down-checkboxes">
           <div><b>Double Down rules</b></div>
-          <div title="Doubling down is allowed only on hand values of 9, 10 and 11">
+          <div
+            title="Doubling down is allowed only on hand values of 9, 10 and 11"
+          >
             <span>European Double Down:</span>
             <input
               v-model="tableStore.rules.europeanDoubleDownOnly"
@@ -323,7 +328,9 @@ const surrenderHand = (hand) => {
         </div>
         <div class="split-checkboxes">
           <div><b>Split rules</b></div>
-          <div title="Split is allowed only on pairs of 10-value cards (10, J, Q, K)">
+          <div
+            title="Split is allowed only on pairs of 10-value cards (10, J, Q, K)"
+          >
             <span>European Split: </span>
             <input
               v-model="tableStore.rules.europeanSplitOnly"
@@ -516,7 +523,11 @@ const surrenderHand = (hand) => {
               <button
                 v-if="tableStore.playerMayDouble(i)"
                 :disabled="
-                  playerStore.bankRoll < (tableStore.rules.allowInsuranceDoubleDown ? tableStore.playerHands[i].betAmount + tableStore.playerHands[i].insuranceBetAmount : tableStore.playerHands[i].betAmount)
+                  playerStore.bankRoll <
+                  (tableStore.rules.allowInsuranceDoubleDown
+                    ? tableStore.playerHands[i].betAmount +
+                      tableStore.playerHands[i].insuranceBetAmount
+                    : tableStore.playerHands[i].betAmount)
                 "
                 @click="doubleHand(i)"
               >
@@ -525,7 +536,11 @@ const surrenderHand = (hand) => {
               <button
                 v-if="tableStore.playerMaySplit(i)"
                 :disabled="
-                  playerStore.bankRoll < (tableStore.rules.allowInsuranceSplit ? tableStore.playerHands[i].betAmount + tableStore.playerHands[i].insuranceBetAmount : tableStore.playerHands[i].betAmount)
+                  playerStore.bankRoll <
+                  (tableStore.rules.allowInsuranceSplit
+                    ? tableStore.playerHands[i].betAmount +
+                      tableStore.playerHands[i].insuranceBetAmount
+                    : tableStore.playerHands[i].betAmount)
                 "
                 @click="splitHand(i)"
               >
@@ -654,10 +669,18 @@ const surrenderHand = (hand) => {
         "
         @click="finishAllInsuranceBets(true)"
       >
-        {{ tableStore.getTotalPlayerInsuranceBetAmount ? 'Insure the remaining hands' : 'Insure all hands' }}
+        {{
+          tableStore.getTotalPlayerInsuranceBetAmount
+            ? "Insure the remaining hands"
+            : "Insure all hands"
+        }}
       </button>
       <button @click="finishAllInsuranceBets(false)">
-        {{ tableStore.getTotalPlayerInsuranceBetAmount ? 'Do not insure the remaining hands' : 'Do not insure any hand' }}
+        {{
+          tableStore.getTotalPlayerInsuranceBetAmount
+            ? "Do not insure the remaining hands"
+            : "Do not insure any hand"
+        }}
       </button>
     </p>
   </div>
