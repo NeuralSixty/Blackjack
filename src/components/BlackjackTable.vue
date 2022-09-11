@@ -71,10 +71,10 @@ const restartGame = () => {
         </div>
         <div>✪ Blackjack pays {{ tableStore.rules.blackjackPayoutRate }}</div>
         <h3>Standard rules</h3>
-        <div v-if="tableStore.rules.dealerPeeksForBlackjack">
-          ✪ Dealer peeks for blackjack (American rule)
+        <div v-if="tableStore.rules.dealerGetsHoleCard">
+          ✪ Dealer gets Hole Card (American rule)
         </div>
-        <div v-else>✪ Dealer doesn't peek for blackjack (European rule)</div>
+        <div v-else>✪ Dealer doesn't get Hole Card (European rule)</div>
         <div v-if="tableStore.rules.insurance.enabled">
           ✪ Insurance is offered - pays
           {{ tableStore.rules.insurance.payoutRate }}
@@ -93,16 +93,32 @@ const restartGame = () => {
         </div>
         <div v-else>✪ Dealer does not burn a card after shuffling</div>
         <h3>Double Down rules</h3>
+        <div v-if="tableStore.rules.europeanDoubleDownOnly">
+          ✪ European Double Down is enabled
+        </div>
+        <div v-else>✪ European Double Down is disabled</div>
         <div v-if="tableStore.rules.doubleAfterSplit">
           ✪ Double After Split is allowed
         </div>
         <div v-else>✪ Double After Split is not allowed</div>
+        <div v-if="tableStore.rules.allowInsuranceDoubleDown">
+          ✪ Insurance Double Down is allowed (European rule)
+        </div>
+        <div v-else>✪ Insurance Double Down is not allowed</div>
         <h3>Split rules</h3>
+        <div v-if="tableStore.rules.europeanSplitOnly">
+          ✪ European Split is enabled
+        </div>
+        <div v-else>✪ European Split is disabled</div>
         <div v-if="tableStore.rules.multipleSplitting.enabled">
           ✪ Player may split up to
           {{ tableStore.rules.multipleSplitting.iterations }} times
         </div>
         <div v-else>✪ Player may only split once</div>
+        <div v-if="tableStore.rules.allowInsuranceSplit">
+          ✪ Insurance split is allowed (European rule)
+        </div>
+        <div v-else>✪ Insurance split is not allowed</div>
         <h3>Rules for Split Aces</h3>
         <div>✪ Player may only split aces once</div>
         <div>✪ Only 1 card for each ace is given</div>

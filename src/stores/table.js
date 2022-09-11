@@ -32,8 +32,12 @@ export const useTableStore = defineStore("table", () => {
     },
     reshuffleStage: 0.25,
     sevenCardCharlie: true,
-    dealerPeeksForBlackjack: true,
+    dealerGetsHoleCard: true,
     burnCardAfterShuffle: true,
+    allowInsuranceDoubleDown: false,
+    allowInsuranceSplit: false,
+    europeanDoubleDownOnly: false,
+    europeanSplitOnly: false
   });
 
   const dealerShouldStand = computed(() => {
@@ -62,7 +66,8 @@ export const useTableStore = defineStore("table", () => {
 
       if (
         playerHand.cards.length !== 2 ||
-        (!rules.doubleAfterSplit && playerHand.splitCount > 0)
+        (!rules.doubleAfterSplit && playerHand.splitCount > 0) ||
+        (rules.europeanDoubleDownOnly && !(playerHand.score > 8 && playerHand.score < 12))
       ) {
         return false;
       }
@@ -82,7 +87,8 @@ export const useTableStore = defineStore("table", () => {
           (rules.multipleSplitting.enabled
             ? rules.multipleSplitting.iterations
             : 1) &&
-        playerHand.cards[0].card.value === playerHand.cards[1].card.value
+        playerHand.cards[0].card.value === playerHand.cards[1].card.value &&
+        !(rules.europeanSplitOnly && !(playerHand.cards[0].card.value === 10 && playerHand.cards[1].card.value === 10))
       ) {
         return true;
       }
@@ -260,8 +266,10 @@ export const useTableStore = defineStore("table", () => {
   });
 
   const dealerShouldAskForInsurance = computed(() => {
-    if (dealerHand.cards.length === 2) {
+    if (rules.dealerGetsHoleCard && dealerHand.cards.length === 2) {
       return dealerHand.cards[1].card.value === 11;
+    } else if (!rules.dealerGetsHoleCard && dealerHand.cards.length === 1) {
+      return dealerHand.cards[0].card.value === 11;
     } else {
       return false;
     }
@@ -576,9 +584,11 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const revealDealerFaceDownCard = () => {
-    for (const hand of dealerHand.cards) {
-      if (hand.faceDown) {
-        hand.faceDown = false;
+    if (rules.dealerGetsHoleCard) {
+      for (const hand of dealerHand.cards) {
+        if (hand.faceDown) {
+          hand.faceDown = false;
+        }
       }
     }
   };

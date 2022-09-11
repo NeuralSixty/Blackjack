@@ -47,9 +47,17 @@ const prepareShoe = () => {
 };
 
 const getDealerScore = () => {
-  const firstDealerCardIsFacedDown = dealerHand.value.cards[0].faceDown;
+  let firstDealerCardIsFacedDown = false;
   const firstDealerCardValue = dealerHand.value.cards[0].card.value;
-  const secondDealerCardValue = dealerHand.value.cards[1].card.value;
+  let secondDealerCardValue = 0;
+
+  if (rules.value.dealerGetsHoleCard) {
+    firstDealerCardIsFacedDown = dealerHand.value.cards[0].faceDown;
+    secondDealerCardValue = dealerHand.value.cards[1].card.value
+  } else if (dealerHand.value.cards.length > 1) {
+    secondDealerCardValue = dealerHand.value.cards[1].card.value
+  }
+
   let dealerScore = dealerHand.value.score;
 
   if (firstDealerCardIsFacedDown) {
@@ -126,11 +134,18 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
   }
 
   if (oldPhase === 4 && newPhase === 4) {
-    tableStore.dealInitialCardsToPlayer(false);
-    tableStore.dealCardToDealer(true);
-    tableStore.dealInitialCardsToPlayer(false);
-    tableStore.dealCardToDealer(false);
-    tableStore.goToNextPhase();
+    if (tableStore.rules.dealerGetsHoleCard) {
+      tableStore.dealInitialCardsToPlayer(false);
+      tableStore.dealCardToDealer(true);
+      tableStore.dealInitialCardsToPlayer(false);
+      tableStore.dealCardToDealer(false);
+      tableStore.goToNextPhase();
+    } else {
+      tableStore.dealInitialCardsToPlayer(false);
+      tableStore.dealCardToDealer(false);
+      tableStore.dealInitialCardsToPlayer(false);
+      tableStore.goToNextPhase();
+    }
   }
 
   if (oldPhase === 5 && newPhase === 5) {
@@ -145,11 +160,11 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
   }
 
   if (oldPhase === 6 && newPhase === 6) {
-    if (dealerHand.value.hasBlackjack && rules.value.dealerPeeksForBlackjack) {
+    if (dealerHand.value.hasBlackjack && rules.value.dealerGetsHoleCard) {
       tableStore.revealDealerFaceDownCard();
       tableStore.finishAllPlayerHands();
-    } else {
-      // Dealer doesn't have Blackjack - collect all insurance bets
+    } else if (rules.value.dealerGetsHoleCard) {
+      // Dealer peeks and has no Blackjack in American version - collect all insurance bets at this point
       const insuranceMoney = tableStore.collectInsuranceMoneyFromPlayers();
       casinoStore.addToBankRoll(insuranceMoney);
     }
@@ -185,6 +200,12 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
 
   // Dealer gives and takes chips accordingly
   if (oldPhase === 9 && newPhase === 9) {
+    // European Blackjack insurance - collect all insurance bets only after players finish their hands
+    if (!rules.value.dealerGetsHoleCard && !dealerHand.value.hasBlackjack) {
+      const insuranceMoney = tableStore.collectInsuranceMoneyFromPlayers();
+      casinoStore.addToBankRoll(insuranceMoney);
+    }
+
     for (const playerHand of playerHands.value) {
       if (playerAndDealerPushed.value(playerHand)) {
         playerStore.addToBankRoll(playerHand.betAmount);
