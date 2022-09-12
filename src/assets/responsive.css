@@ -1,0 +1,15 @@
+@media (pointer: coarse) and (hover: none) {
+  .blackjack-table {
+    flex-direction: column-reverse;
+    gap: 0px !important;
+  }
+  .text-section, .cards-section {
+    width: 100% !important;
+  }
+  .input-groups {
+    flex-direction: column;
+  }
+  .dealer-card-zone, .player-card-zone {
+    width: 100% !important;
+  }
+}
