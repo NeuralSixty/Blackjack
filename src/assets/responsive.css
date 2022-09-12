@@ -5,23 +5,19 @@
   }
   .text-section, .cards-section, .player-phase-info, .betting-actions, .hand-bet-container {
     width: 100% !important;
+    height: auto !important;
   }
   .input-groups {
     flex-direction: column;
   }
   .dealer-card-zone, .player-card-zone {
     width: 100% !important;
-    height: 140px !important;
-  }
-  .dealer-cards-container, .player-cards-container {
-    height: 100px !important;
-    padding: 5px;
-  }
-  .card {
-    width: auto !important;
-    height: 100% !important;
+    height: auto !important;
   }
   .game-view-title {
     display: none;
+  }
+  .dealer-card-values, .player-card-values {
+    min-height: 30px;
   }
 }
