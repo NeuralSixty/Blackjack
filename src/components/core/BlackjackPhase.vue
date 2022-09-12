@@ -51,7 +51,7 @@ const phases = reactive({
   8: {
     name: "comparing",
     description:
-      "🂠 Dealing is drawing cards for their own hand to compare with player's hand...",
+      "🂠 Dealer is drawing cards for their own hand to compare with player's hand...",
   },
   9: {
     name: "finishing",
