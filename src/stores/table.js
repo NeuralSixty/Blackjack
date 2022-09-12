@@ -68,7 +68,12 @@ export const useTableStore = defineStore("table", () => {
         playerHand.cards.length !== 2 ||
         (!rules.doubleAfterSplit && playerHand.splitCount > 0) ||
         (rules.europeanDoubleDownOnly &&
-          !(playerHand.score > 8 && playerHand.score < 12))
+          !(
+            (playerHand.score > 8 && playerHand.score < 12) ||
+            (playerHand.softCount !== 0 &&
+              playerHand.score - 10 > 8 &&
+              playerHand.score - 10 < 12)
+          ))
       ) {
         return false;
       }
