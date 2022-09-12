@@ -660,7 +660,7 @@ const surrenderHand = (hand) => {
       </button>
     </div>
   </div>
-  <div v-if="tableStore.phase === 5">
+  <div v-if="tableStore.phase === 5 && tableStore.numberOfHands > 1">
     <p>
       <button
         :disabled="
