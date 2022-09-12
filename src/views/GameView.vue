@@ -4,7 +4,7 @@ import BlackjackTable from "@/components/BlackjackTable.vue";
 
 <template>
   <main>
-    <h1>Blackjack</h1>
+    <h1 class="game-view-title">Blackjack</h1>
     <BlackjackTable />
   </main>
 </template>
