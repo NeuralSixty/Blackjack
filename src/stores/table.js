@@ -1,6 +1,39 @@
 import { ref, computed, reactive } from "vue";
 import { defineStore } from "pinia";
 
+const swap = (array, first, second) => {
+  let temp;
+
+  temp = array[first];
+  array[first] = array[second];
+  array[second] = temp;
+}
+
+const cryptoRandom = (min, max) => {
+  const range = max - min;
+  const bytesNeeded = Math.ceil(Math.log2(range) / 8);
+  const randomBytes = new Uint8Array(bytesNeeded);
+  const maximumRange = Math.pow(Math.pow(2, 8), bytesNeeded);
+  const extendedRange = Math.floor(maximumRange / range) * range;
+  let i, randomInteger;
+
+  while (true) {
+    window.crypto.getRandomValues(randomBytes);
+    randomInteger = 0;
+
+    for (i = 0; i < bytesNeeded; i++) {
+      randomInteger <<= 8;
+      randomInteger += randomBytes[i];
+    }
+
+    if (randomInteger < extendedRange) {
+      randomInteger %= range;
+
+      return min + randomInteger;
+    }
+  }
+}
+
 export const useTableStore = defineStore("table", () => {
   const shoe = ref([]);
   const discardRack = ref([]);
@@ -462,12 +495,11 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const shuffleShoe = () => {
-    // Durstenfeld shuffle -> O(n)
-    for (let i = shoe.value.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      let temp = shoe.value[i];
-      shoe.value[i] = shoe.value[j];
-      shoe.value[j] = temp;
+    let i, j;
+
+    for (i = shoe.value.length - 1; i > 0; i--) {
+      j = cryptoRandom(0, i + 1);
+      swap(shoe.value, i, j);
     }
   };
 
