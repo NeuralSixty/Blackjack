@@ -247,7 +247,8 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
   }
 
   if (oldPhase === 10 && newPhase === 10) {
-    tableStore.resetPlayerHands();
+    tableStore.deleteAllPlayerHands();
+    tableStore.initPlayerHands();
     tableStore.resetDealerHand();
     tableStore.startNewRound();
   }

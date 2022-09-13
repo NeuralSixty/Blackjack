@@ -693,41 +693,6 @@ export const useTableStore = defineStore("table", () => {
     playerHands.value[hand].hasDoubled = true;
   };
 
-  const resetPlayerHands = () => {
-    for (let i = 0; i < playerHands.value.length; i++) {
-      const hand = playerHands.value[i];
-
-      for (const cardItem of hand.cards) {
-        discardRack.value.push(cardItem);
-      }
-
-      hand.cards.length = 0;
-
-      if (hand.splitCount > 0) {
-        numberOfHands.value--;
-        playerHands.value.splice(i, 1);
-        i--;
-      } else {
-        hand.betAmount = 0;
-        hand.betIsFinished = false;
-        hand.insuranceBetAmount = 0;
-        hand.insuranceMoneyLost = 0;
-        hand.insuranceBetIsFinished = false;
-        hand.softCount = 0;
-        hand.hasBlackjack = false;
-        hand.hasSevenCardCharlie = false;
-        hand.hasBusted = false;
-        hand.hasStood = false;
-        hand.hasSurrendered = false;
-        hand.hasDoubled = false;
-        hand.handIsFinished = false;
-        hand.hasSplit = false;
-        hand.splitCount = 0;
-        hand.score = 0;
-      }
-    }
-  };
-
   const resetDealerHand = () => {
     dealerHand.softCount = 0;
     dealerHand.hasBlackjack = false;
@@ -851,7 +816,6 @@ export const useTableStore = defineStore("table", () => {
     updateInsuranceBetAmount,
     finishPlayerInsuranceBet,
     setDoubleOnPlayerHand,
-    resetPlayerHands,
     resetDealerHand,
     startNewRound,
     startNewGame,
