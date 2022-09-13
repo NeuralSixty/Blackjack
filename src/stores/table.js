@@ -513,7 +513,10 @@ export const useTableStore = defineStore("table", () => {
     for (let i = 0; i < playerHands.value.length; i++) {
       const playerHand = playerHands.value[i];
 
-      if (playerHand.splitCount > 0) {
+      if (
+        getSplitHandAmount.value(playerHand.playerUid) > 0 &&
+        !playerHand.originalHand
+      ) {
         numberOfHands.value--;
       }
 
@@ -624,7 +627,11 @@ export const useTableStore = defineStore("table", () => {
 
     playerHand.cards.push({ faceDown: false, card: cardPulledOutOfShoe });
 
-    if (playerHand.cards.length === 2 && playerHand.score === 21) {
+    if (
+      playerHand.cards.length === 2 &&
+      playerHand.score === 21 &&
+      !(!rules.allowBlackjackOnSplitHand && playerHand.hasSplit)
+    ) {
       playerHand.hasBlackjack = true;
       playerHand.betIsFinished = true;
       playerHand.insuranceBetIsFinished = true;
@@ -791,6 +798,8 @@ export const useTableStore = defineStore("table", () => {
       cards: [],
       originalHand: false,
     };
+
+    newHand.playerUid = playerHands.value[playerHandIndex].playerUid;
 
     const cardToBeSplit = playerHands.value[playerHandIndex].cards.pop();
 
