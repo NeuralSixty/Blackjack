@@ -260,8 +260,9 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
   <div class="dealer-card-zone">
     <div class="dealer-cards-container">
       <CardComponent
-        v-for="cardContainer in tableStore.dealerHand.cards"
-        :key="cardContainer.card.name"
+        v-for="(cardContainer, cardContainerIndex) in tableStore.dealerHand
+          .cards"
+        :key="cardContainerIndex"
         :card-container="cardContainer"
       />
     </div>

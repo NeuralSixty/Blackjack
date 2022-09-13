@@ -247,8 +247,9 @@ const surrenderHand = (playerHandIndex) => {
       <div class="player-cards-container">
         <template v-if="tableStore.playerHands[i]">
           <CardComponent
-            v-for="cardContainer in tableStore.playerHands[i].cards"
-            :key="cardContainer.card.name"
+            v-for="(cardContainer, cardContainerIndex) in tableStore
+              .playerHands[i].cards"
+            :key="cardContainerIndex"
             :card-container="cardContainer"
           />
         </template>
