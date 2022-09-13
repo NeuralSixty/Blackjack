@@ -516,6 +516,10 @@ export const useTableStore = defineStore("table", () => {
       if (playerHand.splitCount > 0) {
         numberOfHands.value--;
       }
+
+      for (const cardItem of playerHand.cards) {
+        discardRack.value.push(cardItem);
+      }
     }
 
     playerHands.value.length = 0;
