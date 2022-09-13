@@ -15,41 +15,41 @@ const startGame = () => {
   tableStore.goToNextPhase();
 };
 
-const placeBet = (hand, bet) => {
+const placeBet = (playerHandIndex, bet) => {
   playerStore.subtractFromBankRoll(bet);
-  tableStore.placePlayerBet(hand, bet);
+  tableStore.placePlayerBet(playerHandIndex, bet);
 };
 
 const placeBetOnAllPlayerHands = (bet) => {
-  for (const [index, hand] of playerHands.value.entries()) {
-    if (!hand.betIsFinished) {
+  for (const [index, playerHand] of playerHands.value.entries()) {
+    if (!playerHand.betIsFinished) {
       playerStore.subtractFromBankRoll(bet);
       tableStore.placePlayerBet(index, bet);
     }
   }
 };
 
-const resetBet = (hand) => {
-  playerStore.resetBankRoll(playerHands.value[hand].betAmount);
-  tableStore.resetPlayerBet(hand);
+const resetBet = (playerHandIndex) => {
+  playerStore.resetBankRoll(playerHands.value[playerHandIndex].betAmount);
+  tableStore.resetPlayerBet(playerHandIndex);
 };
 
 const resetAllBets = () => {
-  for (const [index, hand] of playerHands.value.entries()) {
-    if (!hand.betIsFinished) {
-      playerStore.resetBankRoll(hand.betAmount);
+  for (const [index, playerHand] of playerHands.value.entries()) {
+    if (!playerHand.betIsFinished) {
+      playerStore.resetBankRoll(playerHand.betAmount);
       tableStore.resetPlayerBet(index);
     }
   }
 };
 
-const finishBet = (hand) => {
-  tableStore.finishPlayerBet(hand);
+const finishBet = (playerHandIndex) => {
+  tableStore.finishPlayerBet(playerHandIndex);
 };
 
 const finishAllBets = () => {
-  for (const [index, hand] of playerHands.value.entries()) {
-    if (hand.betAmount) {
+  for (const [index, playerHand] of playerHands.value.entries()) {
+    if (playerHand.betAmount) {
       tableStore.finishPlayerBet(index);
     }
   }
@@ -59,35 +59,35 @@ const goToNextPhase = () => {
   tableStore.goToNextPhase();
 };
 
-const doubleInsuranceBet = (hand) => {
-  const insuranceAmount = playerHands.value[hand].insuranceBetAmount;
+const doubleInsuranceBet = (playerHandIndex) => {
+  const insuranceAmount = playerHands.value[playerHandIndex].insuranceBetAmount;
 
   playerStore.subtractFromBankRoll(insuranceAmount);
-  tableStore.updateInsuranceBetAmount(hand, insuranceAmount * 2);
+  tableStore.updateInsuranceBetAmount(playerHandIndex, insuranceAmount * 2);
 };
 
-const splitInsuranceBet = (hand) => {
-  const insuranceAmount = playerHands.value[hand].insuranceBetAmount;
+const splitInsuranceBet = (playerHandIndex) => {
+  const insuranceAmount = playerHands.value[playerHandIndex].insuranceBetAmount;
 
   playerStore.subtractFromBankRoll(insuranceAmount);
-  tableStore.updateInsuranceBetAmount(hand + 1, insuranceAmount);
+  tableStore.updateInsuranceBetAmount(playerHandIndex + 1, insuranceAmount);
 };
 
-const finishInsuranceBet = (hand, insure) => {
+const finishInsuranceBet = (playerHandIndex, insure) => {
   if (insure) {
-    const insuranceAmount = playerHands.value[hand].betAmount / 2;
+    const insuranceAmount = playerHands.value[playerHandIndex].betAmount / 2;
 
     playerStore.subtractFromBankRoll(insuranceAmount);
-    tableStore.updateInsuranceBetAmount(hand, insuranceAmount);
+    tableStore.updateInsuranceBetAmount(playerHandIndex, insuranceAmount);
   }
 
-  tableStore.finishPlayerInsuranceBet(hand);
+  tableStore.finishPlayerInsuranceBet(playerHandIndex);
 };
 
 const finishAllInsuranceBets = (insure) => {
-  for (const [index, hand] of playerHands.value.entries()) {
-    if (insure && !hand.insuranceBetIsFinished) {
-      const insuranceAmount = hand.betAmount / 2;
+  for (const [index, playerHand] of playerHands.value.entries()) {
+    if (insure && !playerHand.insuranceBetIsFinished) {
+      const insuranceAmount = playerHand.betAmount / 2;
 
       playerStore.subtractFromBankRoll(insuranceAmount);
       tableStore.updateInsuranceBetAmount(index, insuranceAmount);
@@ -97,18 +97,15 @@ const finishAllInsuranceBets = (insure) => {
   }
 };
 
-const getPlayerScore = (hand) => {
-  let playerScore = playerHands.value[hand].score;
+const getPlayerScore = (playerHandIndex) => {
+  let playerScore = playerHands.value[playerHandIndex].score;
 
-  if (playerHands.value[hand].softCount) {
-    if (
-      playerHands.value[hand].hasBlackjack &&
-      !playerHands.value[hand].splitCount > 0
-    ) {
+  if (playerHands.value[playerHandIndex].softCount) {
+    if (playerHands.value[playerHandIndex].hasBlackjack) {
       return "Blackjack!";
     } else if (playerScore === 21) {
       return playerScore;
-    } else if (playerHands.value[hand].cards.length === 7) {
+    } else if (playerHands.value[playerHandIndex].cards.length === 7) {
       return playerScore - 10 + " or " + playerScore + " (7-card Charlie!)";
     } else {
       return playerScore - 10 + " or " + playerScore;
@@ -116,7 +113,7 @@ const getPlayerScore = (hand) => {
   } else {
     if (playerScore > 21) {
       return playerScore + " (Bust!)";
-    } else if (playerHands.value[hand].cards.length === 7) {
+    } else if (playerHands.value[playerHandIndex].cards.length === 7) {
       return playerScore + " (7-card Charlie!)";
     } else {
       return playerScore;
@@ -124,46 +121,49 @@ const getPlayerScore = (hand) => {
   }
 };
 
-const doubleHand = (hand) => {
+const doubleHand = (playerHandIndex) => {
   if (
-    playerHands.value[hand].insuranceBetAmount &&
+    playerHands.value[playerHandIndex].insuranceBetAmount &&
     rules.value.allowInsuranceDoubleDown
   ) {
-    doubleInsuranceBet(hand);
+    doubleInsuranceBet(playerHandIndex);
   }
 
-  placeBet(hand, playerHands.value[hand].betAmount);
-  finishBet(hand);
+  placeBet(playerHandIndex, playerHands.value[playerHandIndex].betAmount);
+  finishBet(playerHandIndex);
 
-  tableStore.dealCardToPlayer(hand);
-  tableStore.standPlayerHand(hand);
-  tableStore.setDoubleOnPlayerHand(hand);
+  tableStore.dealCardToPlayer(playerHandIndex);
+  tableStore.standPlayerHand(playerHandIndex);
+  tableStore.setDoubleOnPlayerHand(playerHandIndex);
 };
 
-const splitHand = (hand) => {
-  tableStore.splitPlayerHand(hand);
+const splitHand = (playerHandIndex) => {
+  tableStore.splitPlayerHand(playerHandIndex);
 
   if (
-    playerHands.value[hand].insuranceBetAmount &&
+    playerHands.value[playerHandIndex].insuranceBetAmount &&
     rules.value.allowInsuranceSplit
   ) {
-    splitInsuranceBet(hand);
+    splitInsuranceBet(playerHandIndex);
   }
 
-  placeBet(hand + 1, playerHands.value[hand].betAmount);
-  finishBet(hand + 1);
+  placeBet(playerHandIndex + 1, playerHands.value[playerHandIndex].betAmount);
+  finishBet(playerHandIndex + 1);
 
-  if (playerHands.value[hand].score === 11) {
-    tableStore.standPlayerHand(hand);
-    tableStore.standPlayerHand(hand + 1);
+  if (
+    !rules.value.allowPlayerTurnOnSplitAces &&
+    playerHands.value[playerHandIndex].score === 11
+  ) {
+    tableStore.standPlayerHand(playerHandIndex);
+    tableStore.standPlayerHand(playerHandIndex + 1);
   }
 
-  tableStore.dealCardToPlayer(hand);
-  tableStore.dealCardToPlayer(hand + 1);
+  tableStore.dealCardToPlayer(playerHandIndex);
+  tableStore.dealCardToPlayer(playerHandIndex + 1);
 };
 
-const surrenderHand = (hand) => {
-  tableStore.surrenderPlayerHand(hand);
+const surrenderHand = (playerHandIndex) => {
+  tableStore.surrenderPlayerHand(playerHandIndex);
 };
 </script>
 

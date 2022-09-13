@@ -254,8 +254,8 @@ export const useTableStore = defineStore("table", () => {
   const getTotalPlayerBetAmount = computed(() => {
     if (playerHands.value.length > 0) {
       return playerHands.value
-        .map((hand) => {
-          return hand.betAmount + hand.insuranceBetAmount;
+        .map((playerHand) => {
+          return playerHand.betAmount + playerHand.insuranceBetAmount;
         })
         .reduce((previousBet, bet) => {
           return previousBet + bet;
@@ -268,9 +268,9 @@ export const useTableStore = defineStore("table", () => {
   const getTotalUnplacedPlayerBetAmount = computed(() => {
     if (playerHands.value.length > 0) {
       return playerHands.value
-        .map((hand) => {
-          return !hand.betIsFinished
-            ? hand.betAmount + hand.insuranceBetAmount
+        .map((playerHand) => {
+          return !playerHand.betIsFinished
+            ? playerHand.betAmount + playerHand.insuranceBetAmount
             : 0;
         })
         .reduce((previousBet, bet) => {
@@ -284,8 +284,8 @@ export const useTableStore = defineStore("table", () => {
   const getTotalPlayerInsuranceBetAmount = computed(() => {
     if (playerHands.value.length > 0) {
       return playerHands.value
-        .map((hand) => {
-          return hand.insuranceBetAmount;
+        .map((playerHand) => {
+          return playerHand.insuranceBetAmount;
         })
         .reduce((previousBet, bet) => {
           return previousBet + bet;
@@ -298,8 +298,10 @@ export const useTableStore = defineStore("table", () => {
   const getHighestPossibleTotalPlayerInsuranceBetAmount = computed(() => {
     if (playerHands.value.length > 0) {
       return playerHands.value
-        .map((hand) => {
-          return !hand.insuranceBetIsFinished ? hand.betAmount / 2 : 0;
+        .map((playerHand) => {
+          return !playerHand.insuranceBetIsFinished
+            ? playerHand.betAmount / 2
+            : 0;
         })
         .reduce(
           (
@@ -374,58 +376,58 @@ export const useTableStore = defineStore("table", () => {
   });
 
   const allBetsAreFinished = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.betIsFinished === true;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.betIsFinished === true;
     });
   });
 
   const allInsuranceBetsAreFinished = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.insuranceBetIsFinished === true;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.insuranceBetIsFinished === true;
     });
   });
 
   const allPlayerHandsHavePlacedBetAmount = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.betAmount > 0;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.betAmount > 0;
     });
   });
 
   const allPlayerHandsAreFinished = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.handIsFinished === true;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.handIsFinished === true;
     });
   });
 
   const allPlayerHandsAreBusted = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.hasBusted === true;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.hasBusted === true;
     });
   });
 
   const allPlayerHandsHaveSevenCardCharlie = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.hasSevenCardCharlie === true;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.hasSevenCardCharlie === true;
     });
   });
 
   const allPlayerHandsHaveBlackjack = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.hasBlackjack === true;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.hasBlackjack === true;
     });
   });
 
   const allPlayerHandsHaveSurrendered = computed(() => {
-    return playerHands.value.every((hand) => {
-      return hand.hasSurrendered === true;
+    return playerHands.value.every((playerHand) => {
+      return playerHand.hasSurrendered === true;
     });
   });
 
   const calculateCardsRemainingBeforeShuffle = computed(() => {
     let cardsHeldByPlayers = 0;
 
-    for (const hand of playerHands.value) {
-      cardsHeldByPlayers += hand.cards.length;
+    for (const playerHand of playerHands.value) {
+      cardsHeldByPlayers += playerHand.cards.length;
     }
 
     const totalCards =
@@ -467,14 +469,14 @@ export const useTableStore = defineStore("table", () => {
   });
 
   const resetBetState = () => {
-    playerHands.value.map((hand) => {
-      hand.betIsFinished = false;
+    playerHands.value.map((playerHand) => {
+      playerHand.betIsFinished = false;
     });
   };
 
   const resetInsuranceBetState = () => {
-    playerHands.value.map((hand) => {
-      hand.insuranceBetIsFinished = false;
+    playerHands.value.map((playerHand) => {
+      playerHand.insuranceBetIsFinished = false;
     });
   };
 
@@ -517,16 +519,16 @@ export const useTableStore = defineStore("table", () => {
     playerHands.value.length = 0;
   };
 
-  const placePlayerBet = (hand, bet) => {
-    playerHands.value[hand].betAmount += bet;
+  const placePlayerBet = (playerHandIndex, bet) => {
+    playerHands.value[playerHandIndex].betAmount += bet;
   };
 
-  const resetPlayerBet = (hand) => {
-    playerHands.value[hand].betAmount = 0;
+  const resetPlayerBet = (playerHandIndex) => {
+    playerHands.value[playerHandIndex].betAmount = 0;
   };
 
-  const finishPlayerBet = (hand) => {
-    playerHands.value[hand].betIsFinished = true;
+  const finishPlayerBet = (playerHandIndex) => {
+    playerHands.value[playerHandIndex].betIsFinished = true;
   };
 
   const goToNextPhase = () => {
@@ -556,88 +558,90 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const dealInitialCardsToPlayer = (faceDown) => {
-    for (const hand of playerHands.value) {
+    for (const playerHand of playerHands.value) {
       const cardPulledOutOfShoe = shoe.value.pop();
 
       if (cardPulledOutOfShoe.value === 11) {
-        hand.softCount += 1;
+        playerHand.softCount += 1;
 
-        if (cardPulledOutOfShoe.value + hand.score <= 21) {
-          hand.score += cardPulledOutOfShoe.value;
+        if (cardPulledOutOfShoe.value + playerHand.score <= 21) {
+          playerHand.score += cardPulledOutOfShoe.value;
         } else {
-          hand.softCount -= 1;
-          hand.score += 1;
+          playerHand.softCount -= 1;
+          playerHand.score += 1;
         }
       } else {
-        hand.score += cardPulledOutOfShoe.value;
+        playerHand.score += cardPulledOutOfShoe.value;
       }
 
-      hand.cards.push({ faceDown: faceDown, card: cardPulledOutOfShoe });
+      playerHand.cards.push({ faceDown: faceDown, card: cardPulledOutOfShoe });
 
-      if (hand.cards.length === 2 && hand.score === 21) {
-        hand.hasBlackjack = true;
-        hand.betIsFinished = true;
-        hand.insuranceBetIsFinished = true;
-        hand.handIsFinished = true;
-      } else if (hand.score === 21) {
-        hand.handIsFinished = true;
-      } else if (hand.score > 21) {
-        if (hand.softCount) {
-          hand.score -= 10;
-          hand.softCount -= 1;
+      if (playerHand.cards.length === 2 && playerHand.score === 21) {
+        playerHand.hasBlackjack = true;
+        playerHand.betIsFinished = true;
+        playerHand.insuranceBetIsFinished = true;
+        playerHand.handIsFinished = true;
+      } else if (playerHand.score === 21) {
+        playerHand.handIsFinished = true;
+      } else if (playerHand.score > 21) {
+        if (playerHand.softCount) {
+          playerHand.score -= 10;
+          playerHand.softCount -= 1;
 
-          if (hand.score === 21) {
-            hand.handIsFinished = true;
+          if (playerHand.score === 21) {
+            playerHand.handIsFinished = true;
           }
         } else {
-          hand.hasBusted = true;
-          hand.handIsFinished = true;
+          playerHand.hasBusted = true;
+          playerHand.handIsFinished = true;
         }
       }
     }
   };
 
-  const dealCardToPlayer = (handIndex) => {
-    const hand = playerHands.value[handIndex];
+  const dealCardToPlayer = (playerHandIndex) => {
+    const playerHand = playerHands.value[playerHandIndex];
     const cardPulledOutOfShoe = shoe.value.pop();
 
     if (cardPulledOutOfShoe.value === 11) {
-      hand.softCount += 1;
+      playerHand.softCount += 1;
 
-      if (cardPulledOutOfShoe.value + hand.score <= 21) {
-        hand.score += cardPulledOutOfShoe.value;
+      if (cardPulledOutOfShoe.value + playerHand.score <= 21) {
+        playerHand.score += cardPulledOutOfShoe.value;
       } else {
-        hand.softCount -= 1;
-        hand.score += 1;
+        playerHand.softCount -= 1;
+        playerHand.score += 1;
       }
     } else {
-      hand.score += cardPulledOutOfShoe.value;
+      playerHand.score += cardPulledOutOfShoe.value;
     }
 
-    hand.cards.push({ faceDown: false, card: cardPulledOutOfShoe });
+    playerHand.cards.push({ faceDown: false, card: cardPulledOutOfShoe });
 
-    if (hand.cards.length === 2 && hand.score === 21) {
-      hand.hasBlackjack = true;
-      hand.betIsFinished = true;
-      hand.insuranceBetIsFinished = true;
-      hand.handIsFinished = true;
-    } else if (hand.score === 21) {
-      hand.handIsFinished = true;
-    } else if (hand.score > 21) {
-      if (hand.softCount) {
-        hand.score -= 10;
-        hand.softCount -= 1;
+    if (playerHand.cards.length === 2 && playerHand.score === 21) {
+      playerHand.hasBlackjack = true;
+      playerHand.betIsFinished = true;
+      playerHand.insuranceBetIsFinished = true;
+      playerHand.handIsFinished = true;
+    } else if (playerHand.score === 21) {
+      playerHand.betIsFinished = true;
+      playerHand.insuranceBetIsFinished = true;
+      playerHand.handIsFinished = true;
+    } else if (playerHand.score > 21) {
+      if (playerHand.softCount) {
+        playerHand.score -= 10;
+        playerHand.softCount -= 1;
 
-        if (hand.score === 21) {
-          hand.handIsFinished = true;
+        if (playerHand.score === 21) {
+          playerHand.handIsFinished = true;
         }
       } else {
-        hand.hasBusted = true;
-        hand.handIsFinished = true;
+        playerHand.hasBusted = true;
+        playerHand.handIsFinished = true;
       }
-    } else if (hand.cards.length === 7 && rules.sevenCardCharlie) {
-      hand.hasSevenCardCharlie = true;
-      hand.handIsFinished = true;
+    } else if (playerHand.cards.length === 7 && rules.sevenCardCharlie) {
+      playerHand.hasSevenCardCharlie = true;
+      playerHand.handIsFinished = true;
     }
   };
 
@@ -681,41 +685,41 @@ export const useTableStore = defineStore("table", () => {
 
   const revealDealerFaceDownCard = () => {
     if (rules.dealerGetsHoleCard) {
-      for (const hand of dealerHand.cards) {
-        if (hand.faceDown) {
-          hand.faceDown = false;
+      for (const playerHand of dealerHand.cards) {
+        if (playerHand.faceDown) {
+          playerHand.faceDown = false;
         }
       }
     }
   };
 
   const finishAllPlayerHands = () => {
-    for (const hand of playerHands.value) {
-      hand.handIsFinished = true;
+    for (const playerHand of playerHands.value) {
+      playerHand.handIsFinished = true;
     }
   };
 
-  const standPlayerHand = (handIndex) => {
-    const hand = playerHands.value[handIndex];
+  const standPlayerHand = (playerHandIndex) => {
+    const playerHand = playerHands.value[playerHandIndex];
 
-    hand.hasStood = true;
-    hand.handIsFinished = true;
+    playerHand.hasStood = true;
+    playerHand.handIsFinished = true;
   };
 
-  const surrenderPlayerHand = (handIndex) => {
-    const hand = playerHands.value[handIndex];
+  const surrenderPlayerHand = (playerHandIndex) => {
+    const playerHand = playerHands.value[playerHandIndex];
 
-    hand.hasSurrendered = true;
-    hand.handIsFinished = true;
+    playerHand.hasSurrendered = true;
+    playerHand.handIsFinished = true;
   };
 
   const collectInsuranceMoneyFromPlayers = () => {
     let collectedMoney = 0;
 
-    for (const hand of playerHands.value) {
-      collectedMoney += hand.insuranceBetAmount;
-      hand.insuranceMoneyLost += hand.insuranceBetAmount;
-      hand.insuranceBetAmount = 0;
+    for (const playerHand of playerHands.value) {
+      collectedMoney += playerHand.insuranceBetAmount;
+      playerHand.insuranceMoneyLost += playerHand.insuranceBetAmount;
+      playerHand.insuranceBetAmount = 0;
     }
 
     return collectedMoney;
@@ -725,16 +729,16 @@ export const useTableStore = defineStore("table", () => {
     discardRack.value.push(shoe.value.pop());
   };
 
-  const updateInsuranceBetAmount = (hand, insuranceBet) => {
-    playerHands.value[hand].insuranceBetAmount = insuranceBet;
+  const updateInsuranceBetAmount = (playerHandIndex, insuranceBet) => {
+    playerHands.value[playerHandIndex].insuranceBetAmount = insuranceBet;
   };
 
-  const finishPlayerInsuranceBet = (hand) => {
-    playerHands.value[hand].insuranceBetIsFinished = true;
+  const finishPlayerInsuranceBet = (playerHandIndex) => {
+    playerHands.value[playerHandIndex].insuranceBetIsFinished = true;
   };
 
-  const setDoubleOnPlayerHand = (hand) => {
-    playerHands.value[hand].hasDoubled = true;
+  const setDoubleOnPlayerHand = (playerHandIndex) => {
+    playerHands.value[playerHandIndex].hasDoubled = true;
   };
 
   const resetDealerHand = () => {
@@ -760,7 +764,7 @@ export const useTableStore = defineStore("table", () => {
     phase.value = 1;
   };
 
-  const splitPlayerHand = (handIndex) => {
+  const splitPlayerHand = (playerHandIndex) => {
     let newHand = {
       playerUid: "",
       betAmount: 0,
@@ -782,21 +786,21 @@ export const useTableStore = defineStore("table", () => {
       originalHand: false,
     };
 
-    const cardToBeSplit = playerHands.value[handIndex].cards.pop();
+    const cardToBeSplit = playerHands.value[playerHandIndex].cards.pop();
 
-    playerHands.value[handIndex].hasSplit = true;
+    playerHands.value[playerHandIndex].hasSplit = true;
 
     newHand.cards.push(cardToBeSplit);
     newHand.score += cardToBeSplit.card.value;
 
     if (cardToBeSplit.card.value === 11) {
       newHand.softCount++;
-      playerHands.value[handIndex].score -= 1;
+      playerHands.value[playerHandIndex].score -= 1;
     } else {
-      playerHands.value[handIndex].score -= cardToBeSplit.card.value;
+      playerHands.value[playerHandIndex].score -= cardToBeSplit.card.value;
     }
 
-    playerHands.value.splice(handIndex + 1, 0, newHand);
+    playerHands.value.splice(playerHandIndex + 1, 0, newHand);
     numberOfHands.value++;
   };
 
