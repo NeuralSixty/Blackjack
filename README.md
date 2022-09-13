@@ -2,7 +2,7 @@
 Blackjack implementation built with Vue.js 3 Composition API.
 
 ## Rules
-All of the standard and most well-known rules have been implemented. At the beginning of each session, these rules may be customized to accomodate for either house or player advantage. Extremely rare rules, such as surrendering after splitting, or rules extremely disadvantageous for the player, such as 6 to 5 Blackjack payouts, have been discarded and therefore not implemented.
+All of the standard and most well-known rules have been implemented. At the beginning of each session, these rules may be customized to accomodate for either house or player advantage. Due to the modular nature of the Blackjack table state, new rules can be implemented with much ease and without conflicting with other rules.
 
 ## Dealer
 The dealer simulates single-deck up to 8-deck games, therefore it's possible to train card counting. The dealer reshuffles at 25% of the shoe left.

@@ -183,7 +183,7 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
       dealerHand.value.hasBlackjack ||
       allPlayerHandsAreBusted.value ||
       allPlayerHandsHaveSevenCardCharlie.value ||
-      allPlayerHandsHaveBlackjack.value ||
+      (rules.value.dealerGetsHoleCard && allPlayerHandsHaveBlackjack.value) ||
       allPlayerHandsHaveSurrendered.value
     ) {
       tableStore.revealDealerFaceDownCard();

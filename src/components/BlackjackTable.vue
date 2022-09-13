@@ -81,7 +81,7 @@ const restartGame = () => {
         </div>
         <div v-else>✪ Insurance is not offered</div>
         <div v-if="tableStore.rules.playerCanLateSurrender">
-          ✪ Player can late surrender (first two cards only - no split hands)
+          ✪ Player can late surrender (must be first action)
         </div>
         <div v-else>✪ Player cannot late surrender</div>
         <div v-if="tableStore.rules.sevenCardCharlie">
@@ -92,6 +92,10 @@ const restartGame = () => {
           ✪ Dealer burns a card after shuffling
         </div>
         <div v-else>✪ Dealer does not burn a card after shuffling</div>
+        <div v-if="tableStore.rules.allowBlackjackOnSplitHand">
+          ✪ Blackjack on split hands is allowed
+        </div>
+        <div v-else>✪ Blackjack on split hands is not allowed</div>
         <h3>Double Down rules</h3>
         <div v-if="tableStore.rules.europeanDoubleDownOnly">
           ✪ European Double Down is enabled
@@ -102,7 +106,7 @@ const restartGame = () => {
         </div>
         <div v-else>✪ Double After Split is not allowed</div>
         <div v-if="tableStore.rules.allowInsuranceDoubleDown">
-          ✪ Insurance Double Down is allowed (European rule)
+          ✪ Insurance Double Down is allowed
         </div>
         <div v-else>✪ Insurance Double Down is not allowed</div>
         <h3>Split rules</h3>
@@ -115,13 +119,36 @@ const restartGame = () => {
           {{ tableStore.rules.multipleSplitting.iterations }} times
         </div>
         <div v-else>✪ Player may only split once</div>
+        <div
+          v-if="
+            tableStore.rules.multipleSplitting.enabled &&
+            tableStore.rules.allowMultipleSplitAces
+          "
+        >
+          ⤷ ✪ Player may also split aces multiple times
+        </div>
+        <div v-else-if="tableStore.rules.multipleSplitting.enabled">
+          ⤷ ✪ Player may only split aces once
+        </div>
+        <div v-if="tableStore.rules.allowPlayerTurnOnSplitAces">
+          ✪ Player is allowed a turn after splitting aces
+        </div>
+        <div v-else>✪ Only 1 card for each ace is given</div>
         <div v-if="tableStore.rules.allowInsuranceSplit">
-          ✪ Insurance split is allowed (European rule)
+          ✪ Insurance split is allowed
         </div>
         <div v-else>✪ Insurance split is not allowed</div>
-        <h3>Rules for Split Aces</h3>
-        <div>✪ Player may only split aces once</div>
-        <div>✪ Only 1 card for each ace is given</div>
+        <div
+          v-if="
+            tableStore.rules.allowSurrenderAfterSplit &&
+            tableStore.rules.playerCanLateSurrender
+          "
+        >
+          ✪ (Surrender rule) Surrender after split is allowed
+        </div>
+        <div v-else-if="tableStore.rules.playerCanLateSurrender">
+          ✪ (Surrender rule) Surrender after split is not allowed
+        </div>
       </div>
     </div>
     <div class="cards-section">

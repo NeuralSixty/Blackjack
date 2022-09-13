@@ -7,15 +7,16 @@ const swap = (array, first, second) => {
   temp = array[first];
   array[first] = array[second];
   array[second] = temp;
-}
+};
 
-const cryptoRandom = (min, max) => {
+const cryptoRandomNumber = (min, max) => {
   const range = max - min;
   const bytesNeeded = Math.ceil(Math.log2(range) / 8);
   const randomBytes = new Uint8Array(bytesNeeded);
   const maximumRange = Math.pow(Math.pow(2, 8), bytesNeeded);
   const extendedRange = Math.floor(maximumRange / range) * range;
-  let i, randomInteger;
+  let i = 0;
+  let randomInteger = 0;
 
   while (true) {
     window.crypto.getRandomValues(randomBytes);
@@ -32,7 +33,25 @@ const cryptoRandom = (min, max) => {
       return min + randomInteger;
     }
   }
-}
+};
+
+const bytesToHex = (bytes) => {
+  let hexString = "";
+  let hex = "";
+
+  for (let i = 0; i < bytes.length; i++) {
+    hex = bytes[i].toString(16);
+
+    if (hex.length === 1) hex = "0" + hex;
+    hexString += hex;
+  }
+
+  return hexString;
+};
+
+const cryptoRandom32ByteString = () => {
+  return bytesToHex(window.crypto.getRandomValues(new Uint8Array(32)));
+};
 
 export const useTableStore = defineStore("table", () => {
   const shoe = ref([]);
@@ -71,6 +90,24 @@ export const useTableStore = defineStore("table", () => {
     allowInsuranceSplit: false,
     europeanDoubleDownOnly: false,
     europeanSplitOnly: false,
+    allowBlackjackOnSplitHand: false,
+    allowMultipleSplitAces: false,
+    allowPlayerTurnOnSplitAces: false,
+    allowSurrenderAfterSplit: false,
+  });
+
+  const getSplitHandAmount = computed(() => {
+    return (playerUid) => {
+      let amount = 0;
+
+      for (const playerHand of playerHands.value) {
+        if (playerHand.playerUid === playerUid && playerHand.hasSplit) {
+          amount++;
+        }
+      }
+
+      return amount;
+    };
   });
 
   const dealerShouldStand = computed(() => {
@@ -99,7 +136,8 @@ export const useTableStore = defineStore("table", () => {
 
       if (
         playerHand.cards.length !== 2 ||
-        (!rules.doubleAfterSplit && playerHand.splitCount > 0) ||
+        (!rules.doubleAfterSplit &&
+          getSplitHandAmount.value(playerHand.playerUid) > 0) ||
         (rules.europeanDoubleDownOnly &&
           !(
             (playerHand.score > 8 && playerHand.score < 12) ||
@@ -121,9 +159,13 @@ export const useTableStore = defineStore("table", () => {
 
       if (
         playerHand.cards.length === 2 &&
-        !playerHand.hasSplit &&
-        playerHand.splitCount <
-          (rules.multipleSplitting.enabled
+        getSplitHandAmount.value(playerHand.playerUid) <
+          (rules.multipleSplitting.enabled &&
+          !(
+            !rules.allowMultipleSplitAces &&
+            playerHand.cards[0].card.value === 11 &&
+            playerHand.cards[1].card.value === 11
+          )
             ? rules.multipleSplitting.iterations
             : 1) &&
         playerHand.cards[0].card.value === playerHand.cards[1].card.value &&
@@ -149,8 +191,7 @@ export const useTableStore = defineStore("table", () => {
       if (
         rules.playerCanLateSurrender &&
         playerHand.cards.length === 2 &&
-        !playerHand.splitCount > 0 &&
-        !playerHand.hasSplit
+        !(!rules.allowSurrenderAfterSplit && playerHand.hasSplit)
       ) {
         return true;
       }
@@ -402,6 +443,7 @@ export const useTableStore = defineStore("table", () => {
   const calculateBlackjackPayoutRate = computed(() => {
     const calculations = {
       "3 to 2": 1.5,
+      "6 to 5": 1.2,
     };
 
     return calculations[rules.blackjackPayoutRate];
@@ -442,6 +484,7 @@ export const useTableStore = defineStore("table", () => {
         playerHands.value[i] = {};
       }
 
+      playerHands.value[i].playerUid = cryptoRandom32ByteString();
       playerHands.value[i].betAmount = 0;
       playerHands.value[i].betIsFinished = false;
       playerHands.value[i].insuranceBetAmount = 0;
@@ -456,9 +499,9 @@ export const useTableStore = defineStore("table", () => {
       playerHands.value[i].hasDoubled = false;
       playerHands.value[i].handIsFinished = false;
       playerHands.value[i].hasSplit = false;
-      playerHands.value[i].splitCount = 0;
       playerHands.value[i].cards = [];
       playerHands.value[i].score = 0;
+      playerHands.value[i].originalHand = true;
     }
   };
 
@@ -495,10 +538,11 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const shuffleShoe = () => {
-    let i, j;
+    let i = 0;
+    let j = 0;
 
     for (i = shoe.value.length - 1; i > 0; i--) {
-      j = cryptoRandom(0, i + 1);
+      j = cryptoRandomNumber(0, i + 1);
       swap(shoe.value, i, j);
     }
   };
@@ -718,6 +762,7 @@ export const useTableStore = defineStore("table", () => {
 
   const splitPlayerHand = (handIndex) => {
     let newHand = {
+      playerUid: "",
       betAmount: 0,
       betIsFinished: false,
       insuranceBetAmount: 0,
@@ -731,10 +776,10 @@ export const useTableStore = defineStore("table", () => {
       hasSurrendered: false,
       hasDoubled: false,
       handIsFinished: false,
-      hasSplit: false,
-      splitCount: playerHands.value[handIndex].splitCount + 1,
+      hasSplit: true,
       score: 0,
       cards: [],
+      originalHand: false,
     };
 
     const cardToBeSplit = playerHands.value[handIndex].cards.pop();
@@ -763,6 +808,7 @@ export const useTableStore = defineStore("table", () => {
     playerHands,
     numberOfHands,
     rules,
+    getSplitHandAmount,
     dealerShouldStand,
     playerMayDouble,
     playerMaySplit,

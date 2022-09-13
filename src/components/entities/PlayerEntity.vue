@@ -299,6 +299,13 @@ const surrenderHand = (hand) => {
               type="checkbox"
             />
           </div>
+          <div>
+            <span>Allow Blackjack on split hands: </span>
+            <input
+              v-model="tableStore.rules.allowBlackjackOnSplitHand"
+              type="checkbox"
+            />
+          </div>
         </div>
         <div class="double-down-checkboxes">
           <div><b>Double Down rules</b></div>
@@ -344,10 +351,31 @@ const surrenderHand = (hand) => {
               type="checkbox"
             />
           </div>
+          <div v-if="tableStore.rules.multipleSplitting.enabled">
+            <span>⤷ Allow aces to be split multiple times: </span>
+            <input
+              v-model="tableStore.rules.allowMultipleSplitAces"
+              type="checkbox"
+            />
+          </div>
+          <div>
+            <span>Allow player a turn after splitting aces: </span>
+            <input
+              v-model="tableStore.rules.allowPlayerTurnOnSplitAces"
+              type="checkbox"
+            />
+          </div>
           <div>
             <span>Allow insurance split: </span>
             <input
               v-model="tableStore.rules.allowInsuranceSplit"
+              type="checkbox"
+            />
+          </div>
+          <div v-if="tableStore.rules.playerCanLateSurrender">
+            <span>(Surrender rule) Allow surrender after split: </span>
+            <input
+              v-model="tableStore.rules.allowSurrenderAfterSplit"
               type="checkbox"
             />
           </div>
@@ -394,6 +422,13 @@ const surrenderHand = (hand) => {
               min="1"
               max="7"
             />
+          </div>
+          <div>
+            <span>Blackjack payout:</span>
+            <select v-model="tableStore.rules.blackjackPayoutRate">
+              <option value="3 to 2">3 to 2</option>
+              <option value="6 to 5">6 to 5</option>
+            </select>
           </div>
         </div>
       </div>
