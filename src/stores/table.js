@@ -511,9 +511,9 @@ export const useTableStore = defineStore("table", () => {
 
   const deleteAllPlayerHands = () => {
     for (let i = 0; i < playerHands.value.length; i++) {
-      const hand = playerHands.value[i];
+      const playerHand = playerHands.value[i];
 
-      if (hand.splitCount > 0) {
+      if (playerHand.splitCount > 0) {
         numberOfHands.value--;
       }
     }
