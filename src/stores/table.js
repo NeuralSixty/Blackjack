@@ -18,7 +18,7 @@ const cryptoRandomNumber = (min, max) => {
   let i = 0;
   let randomInteger = 0;
 
-  while (true) {
+  for (;;) {
     window.crypto.getRandomValues(randomBytes);
     randomInteger = 0;
 
@@ -30,9 +30,11 @@ const cryptoRandomNumber = (min, max) => {
     if (randomInteger < extendedRange) {
       randomInteger %= range;
 
-      return min + randomInteger;
+      break;
     }
   }
+
+  return min + randomInteger;
 };
 
 const bytesToHex = (bytes) => {
