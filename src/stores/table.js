@@ -84,7 +84,7 @@ export const useTableStore = defineStore("table", () => {
       enabled: true,
       iterations: 4,
     },
-    reshuffleStage: 0.25,
+    deckPenetration: 75,
     sevenCardCharlie: true,
     dealerGetsHoleCard: true,
     burnCardAfterShuffle: true,
@@ -439,7 +439,8 @@ export const useTableStore = defineStore("table", () => {
       cardsHeldByPlayers;
 
     const cardsLeftBeforeReshuffle =
-      shoe.value.length - Math.ceil(totalCards * rules.reshuffleStage);
+      shoe.value.length -
+      Math.ceil(totalCards * (1 - rules.deckPenetration / 100));
 
     return cardsLeftBeforeReshuffle < 0 ? 0 : cardsLeftBeforeReshuffle;
   });

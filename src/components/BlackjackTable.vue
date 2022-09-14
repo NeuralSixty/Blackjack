@@ -46,8 +46,7 @@ const restartGame = () => {
           }}</span>
         </div>
         <div>
-          ✪ Dealer will reshuffle at
-          {{ tableStore.rules.reshuffleStage * 100 }}% of the shoe
+          ✪ Deck has {{ tableStore.rules.deckPenetration }}% penetration
         </div>
         <div>
           ✪ {{ tableStore.calculateCardsRemainingBeforeShuffle }}

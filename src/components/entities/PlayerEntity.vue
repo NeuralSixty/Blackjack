@@ -431,6 +431,23 @@ const surrenderHand = (playerHandIndex) => {
               <option value="6 to 5">6 to 5</option>
             </select>
           </div>
+          <div>
+            <span>Deck penetration (%):</span>
+            <input
+              v-model.number="tableStore.rules.deckPenetration"
+              type="range"
+              min="50"
+              max="85"
+              step="5"
+            />
+            <input
+              v-model="tableStore.rules.deckPenetration"
+              disabled
+              type="number"
+              min="50"
+              max="85"
+            />
+          </div>
         </div>
       </div>
       <p><button @click="startGame">Start the game</button></p>
