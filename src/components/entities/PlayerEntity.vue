@@ -154,12 +154,12 @@ const splitHand = (playerHandIndex) => {
     !rules.value.allowPlayerTurnOnSplitAces &&
     playerHands.value[playerHandIndex].score === 11
   ) {
-    tableStore.standPlayerHand(playerHandIndex);
     tableStore.standPlayerHand(playerHandIndex + 1);
+    tableStore.standPlayerHand(playerHandIndex);
   }
 
-  tableStore.dealCardToPlayer(playerHandIndex);
   tableStore.dealCardToPlayer(playerHandIndex + 1);
+  tableStore.dealCardToPlayer(playerHandIndex);
 };
 
 const surrenderHand = (playerHandIndex) => {

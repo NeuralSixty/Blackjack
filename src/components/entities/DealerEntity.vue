@@ -246,9 +246,13 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
   }
 
   if (oldPhase === 10 && newPhase === 10) {
+    // The dealer grabs their cards first, then the sweeping motion to grab the
+    // player's cards from right to left from the dealer's perspective is simulated.
+    // This will end up, from the player's perspective, with the rightmost player's
+    // last card being on the bottom position in the discard rack, and the dealer's first card on the top position.
     tableStore.deleteAllPlayerHands();
-    tableStore.initPlayerHands();
     tableStore.resetDealerHand();
+    tableStore.initPlayerHands();
     tableStore.startNewRound();
   }
 });

@@ -511,7 +511,7 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const deleteAllPlayerHands = () => {
-    for (let i = 0; i < playerHands.value.length; i++) {
+    for (let i = playerHands.value.length - 1; i >= 0; i--) {
       const playerHand = playerHands.value[i];
 
       if (
@@ -521,8 +521,8 @@ export const useTableStore = defineStore("table", () => {
         numberOfHands.value--;
       }
 
-      for (const cardItem of playerHand.cards) {
-        discardRack.value.push(cardItem.card);
+      for (let j = playerHand.cards.length - 1; j >= 0; j--) {
+        discardRack.value.unshift(playerHand.cards[j].card);
       }
     }
 
@@ -568,8 +568,9 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const dealInitialCardsToPlayer = (faceDown) => {
-    for (const playerHand of playerHands.value) {
-      const cardPulledOutOfShoe = shoe.value.pop();
+    for (let i = playerHands.value.length - 1; i >= 0; i--) {
+      const playerHand = playerHands.value[i];
+      const cardPulledOutOfShoe = shoe.value.shift();
 
       if (cardPulledOutOfShoe.value === 11) {
         playerHand.softCount += 1;
@@ -611,7 +612,7 @@ export const useTableStore = defineStore("table", () => {
 
   const dealCardToPlayer = (playerHandIndex) => {
     const playerHand = playerHands.value[playerHandIndex];
-    const cardPulledOutOfShoe = shoe.value.pop();
+    const cardPulledOutOfShoe = shoe.value.shift();
 
     if (cardPulledOutOfShoe.value === 11) {
       playerHand.softCount += 1;
@@ -660,7 +661,7 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const dealCardToDealer = (faceDown) => {
-    const cardPulledOutOfShoe = shoe.value.pop();
+    const cardPulledOutOfShoe = shoe.value.shift();
 
     if (cardPulledOutOfShoe.value === 11) {
       dealerHand.softCount += 1;
@@ -740,7 +741,7 @@ export const useTableStore = defineStore("table", () => {
   };
 
   const burnCard = () => {
-    discardRack.value.push(shoe.value.pop());
+    discardRack.value.unshift(shoe.value.shift());
   };
 
   const updateInsuranceBetAmount = (playerHandIndex, insuranceBet) => {
@@ -763,8 +764,8 @@ export const useTableStore = defineStore("table", () => {
     dealerHand.handIsFinished = false;
     dealerHand.score = 0;
 
-    for (const cardItem of dealerHand.cards) {
-      discardRack.value.push(cardItem.card);
+    for (let i = dealerHand.cards.length - 1; i >= 0; i--) {
+      discardRack.value.unshift(dealerHand.cards[i].card);
     }
 
     dealerHand.cards.length = 0;
@@ -822,13 +823,13 @@ export const useTableStore = defineStore("table", () => {
 
   const dumpRemainingShoeOnDiscardRack = () => {
     while (shoe.value.length > 0) {
-      discardRack.value.push(shoe.value.pop());
+      discardRack.value.unshift(shoe.value.shift());
     }
   };
 
   const dumpDiscardRackOnShoe = () => {
     while (discardRack.value.length > 0) {
-      shoe.value.push(discardRack.value.pop());
+      shoe.value.unshift(discardRack.value.shift());
     }
   };
 
