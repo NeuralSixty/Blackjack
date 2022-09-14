@@ -522,7 +522,7 @@ export const useTableStore = defineStore("table", () => {
       }
 
       for (const cardItem of playerHand.cards) {
-        discardRack.value.push(cardItem);
+        discardRack.value.push(cardItem.card);
       }
     }
 
@@ -764,7 +764,7 @@ export const useTableStore = defineStore("table", () => {
     dealerHand.score = 0;
 
     for (const cardItem of dealerHand.cards) {
-      discardRack.value.push(cardItem);
+      discardRack.value.push(cardItem.card);
     }
 
     dealerHand.cards.length = 0;
@@ -818,6 +818,18 @@ export const useTableStore = defineStore("table", () => {
 
     playerHands.value.splice(playerHandIndex + 1, 0, newHand);
     numberOfHands.value++;
+  };
+
+  const dumpRemainingShoeOnDiscardRack = () => {
+    while (shoe.value.length > 0) {
+      discardRack.value.push(shoe.value.pop());
+    }
+  };
+
+  const dumpDiscardRackOnShoe = () => {
+    while (discardRack.value.length > 0) {
+      shoe.value.push(discardRack.value.pop());
+    }
   };
 
   return {
@@ -886,5 +898,7 @@ export const useTableStore = defineStore("table", () => {
     startNewRound,
     startNewGame,
     splitPlayerHand,
+    dumpRemainingShoeOnDiscardRack,
+    dumpDiscardRackOnShoe,
   };
 });

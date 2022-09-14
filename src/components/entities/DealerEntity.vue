@@ -113,9 +113,8 @@ watch(tableStore, (newTableStoreState, oldTableStoreState) => {
     tableStore.goToNextPhase();
   } else if (oldPhase === 2 && newPhase === 2) {
     if (calculateCardsRemainingBeforeShuffle.value <= 0) {
-      tableStore.emptyShoe();
-      tableStore.emptyDiscardRack();
-      prepareShoe();
+      tableStore.dumpRemainingShoeOnDiscardRack();
+      tableStore.dumpDiscardRackOnShoe();
       tableStore.shuffleShoe();
 
       if (rules.value.burnCardAfterShuffle) {
