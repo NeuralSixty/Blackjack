@@ -115,8 +115,8 @@ const restartGame = () => {
         </div>
         <div v-else>✪ European Split is disabled</div>
         <div v-if="tableStore.rules.multipleSplitting.enabled">
-          ✪ Player may split up to
-          {{ tableStore.rules.multipleSplitting.iterations }} times
+          ✪ Player may have up to
+          {{ tableStore.rules.multipleSplitting.iterations }} split hands
         </div>
         <div v-else>✪ Player may only split once</div>
         <div

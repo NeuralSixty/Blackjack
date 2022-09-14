@@ -82,7 +82,7 @@ export const useTableStore = defineStore("table", () => {
     dealerDrawing: "H17",
     multipleSplitting: {
       enabled: true,
-      iterations: 3,
+      iterations: 4,
     },
     reshuffleStage: 0.25,
     sevenCardCharlie: true,
