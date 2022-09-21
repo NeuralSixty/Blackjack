@@ -3,7 +3,7 @@
     flex-direction: column-reverse;
     gap: 0px !important;
   }
-  .text-section, .cards-section, .player-phase-info, .betting-actions, .hand-bet-container {
+  .text-section, .cards-section, .player-phase-info, .betting-actions, .hand-bet-container, .hidden-betting-actions, .hidden-player-phase-info {
     width: 100% !important;
     height: auto !important;
   }
